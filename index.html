@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Connection to MetaMask</title>
+<style>
+body {
+    background-color: cadetblue;
+    font-size: 28px;
+    text-align: center;
+    font-family: Arial;
+}
+button {
+    background-color: turquoise;
+    font-size: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+button:hover {
+    background-color: peru;
+}
+p {
+    font-size: 22px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Connect to MetaMask</h1>
+
+<button onclick="ConnectMetaMask()">Connect to MetaMask</button><br><br>
+
+<button onclick="PersonalAcc()">Personal Account</button>
+<p id="accountArea"></p>
+
+<button onclick="BusinessAcc()">Business Account</button>
+<p id="accountArea2"></p>
+
+<button onclick="CorpoAcc()">Corporate Account</button>
+<p id="accountArea3"></p>
+
+<script>
+let accounts = [];
+
+// Connect to MetaMask
+const ConnectMetaMask = async () => {
+    if (typeof window.ethereum !== "undefined") {
+        try {
+            accounts = await window.ethereum.request({
+                method: "eth_requestAccounts"
+            });
+            alert("Connected to MetaMask: " + accounts[0]);
+        } catch (error) {
+            console.error("Error connecting:", error);
+        }
+    } else {
+        alert("MetaMask not installed!");
+    }
+};
+
+// Personal Account = accounts[0]
+const PersonalAcc = async () => {
+    if (accounts.length === 0) {
+        alert("Please connect to MetaMask first.");
+        return;
+    }
+    document.getElementById("accountArea").innerHTML =
+        `Personal Account: ${accounts[0]}`;
+};
+
+// Business Account = accounts[1]
+const BusinessAcc = () => {
+    if (accounts.length > 1) {
+        document.getElementById("accountArea2").innerHTML =
+            `Business Account: ${accounts[1]}`;
+    } else {
+        alert("No Business account found (need 2+ accounts in MetaMask).");
+    }
+};
+
+// Corporate Account = accounts[2]
+const CorpoAcc = () => {
+    if (accounts.length > 2) {
+        document.getElementById("accountArea3").innerHTML =
+            `Corporate Account: ${accounts[2]}`;
+    } else {
+        alert("No Corporate account found (need 3+ accounts in MetaMask).");
+    }
+};
+</script>
+
+</body>
+</html>
